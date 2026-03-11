@@ -50,10 +50,11 @@
 // Candado: Evita la doble declaración
 #ifndef _TABLERO_H_
 #define _TABLERO_H_
+#include "Avatar.h"
 #include <vector>
 #include <string>
-using namespace std;
 
+using namespace std;
 // Nombre clase
 class Tablero
 {
@@ -61,14 +62,14 @@ class Tablero
   private: 
     vector <vector <int> > laberinto;//un vector de vectores de 1 o 0 donde hay camino o precipicio
     string nivel; //Almacena el nivel del juego
-    
-
-  // métodos
+    int posX;
+    int posY;
   public:
  
     Tablero();   // Método constructor
     void cargarTablero(string nombreDelArchivo);// Permite cargar el tablero desde un archivo .txt
     void mostrarTablero();// Muestra el tablero en pantalla
+    void position(int x, int y);
     int getCelda(int x, int y);// Retorna "0" o "1" del tablero
     int getNivel();    // Retorna el nivel del juego
 };

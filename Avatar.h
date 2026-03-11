@@ -52,36 +52,38 @@
 // Candado: Evita la doble declaración
 #ifndef _AVATAR_H_
 #define _AVATAR_H_
-#include "Tablero.h"
+class Tablero;
 #include <stack>
 #include <string>
 #include <vector>
 using namespace std;
-
 // Nombre clase
 class Avatar {
 	// atributos
 private:
-	int posX; //Posicion en las filas
-	int posY; //posicion en las columnas
+	int posX = 2; //Posicion en las filas
+	int posY = 1; //posicion en las columnas
 	vector<vector<int>> ruta; //almacena la posX y posY de la ruta que ha tomado el avatar
-	Tablero mapa; //modificar el codigo para que el mapa se obtiene por referencia
+	 //modificar el codigo para que el mapa se obtiene por referencia
 	stack<int> posiblesCaminosX; //Consultar sobre el manejo de las pilas acá se apilan posibles caminos en las filas
 	stack<int> posiblesCaminosY;//Consultar sobre el manejo de las pilas acá se apilan posibles caminos en las columnas
-
+	Tablero& mapa;
 	// métodos
 public:
 	// Método constructor
-	Avatar(Tablero auxmapa);//modificar el codigo para que el mapa se obtiene por referencia; Permite cargar el tablero desde un archivo.txt
-	void moverAvatar(); //Permite que el avatar se mueva por el laberinto siempre a la derecha
+	Avatar(Tablero& tablero);//modificar el codigo para que el mapa se obtiene por referencia; Permite cargar el tablero desde un archivo.txt
+	void moverAvatar();//Permite que el avatar se mueva por el laberinto siempre a la derecha
+	void setAvatarPos();
+	void respawn();
 	int getPosX(); 
 	int getPosY();
-	int respawn(vector<vector<int>> laberinto);
 	void guardarPosibleCamino(int x, int y);//Apila posibles caminos a tomar por el avatar
 	void guardarRuta();//Almacena la ruta que lleva el avatar
 	void mostrarCaminosPosibles();//Muestra los posibles camios
 	void mapearNuevosCaminos();//Busca nuevos caminos implementar en el punto extra
 	void imprimirSolucion();
+	void CompararCaminos();
+	bool esPosibleContinuar();
 };
 // Cierro el candado
 #endif

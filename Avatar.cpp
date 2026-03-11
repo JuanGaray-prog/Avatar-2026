@@ -9,23 +9,16 @@
 #include <stdlib.h>
 #include <time.h>
 #include <random>
-#include <vector>
-using namespace std; 
-    
-    // 2. Inicializar el motor generador (Mersenne Twister)
-    
-
-    // 3. Definir el intervalo [min, max] (ambos inclusive)
-
-
-    // 4. Generar el número
+using namespace std;
 
 // Constructor
-Avatar::Avatar(Tablero auxmapa):mapa(auxmapa) {
+Avatar::Avatar(Tablero& tablero):mapa(tablero) {
 	//Se inicializa el avatar en la posicion 1 en la fila y 1 en la columna
 	ruta.resize(0);//Se inicializa el vector de rutas
 	posiblesCaminosX.empty();//se inicializa los vectores de posibles caminos en X
 	posiblesCaminosY.empty();//se inicializa los vectores de posibles caminos en Y
+	posX = 2;
+	posY = 1;
 }
 
 void Avatar::mapearNuevosCaminos() {
@@ -34,20 +27,20 @@ void Avatar::mapearNuevosCaminos() {
 	guardarPosibleCamino(posX - 1, posY); // arriba
 	guardarPosibleCamino(posX + 1, posY); // abajo
 }
-int Avatar::respawn(vector<vector<int>> laberinto){
-	int loop = 1;
-	int posX,posY;
-	while (loop == 1){
-	random_device rd;
-	mt19937 gen(rd()); 
-	uniform_int_distribution<> distrib(0, 9);
-	int posX,posY = distrib(gen);
-	if (laberinto[posX][posY] != 0){
-		loop == 0;
+
+void Avatar::CompararCaminos(){
+
+	for (int i = 0; i < ruta.size(); ++i ){
+		if (!posiblesCaminosX.empty() && !posiblesCaminosY.empty()){
+
+			if ((ruta[i][0] == posiblesCaminosX.top()) && (ruta[i][1] == posiblesCaminosY.top())) {
+				posiblesCaminosX.pop();
+				posiblesCaminosY.pop();
+				}
+		}
 	}
-	}
-	return posX,posY;
 }
+
 // Mover el Avatar
 void Avatar::moverAvatar() {
 	posX = posiblesCaminosX.top();
@@ -98,9 +91,27 @@ void Avatar::guardarRuta() {
 	aux.push_back(posY);
 	ruta.push_back(aux);
 }
+void Avatar::respawn(){
+    while(true){
+        random_device rd;
+        mt19937 gen(rd()); 
+        uniform_int_distribution<> distrib(0, 9);
+        int ay = distrib(gen);
+        int ax = distrib(gen);
+        if (mapa.getCelda(ax,ay) != 0){ 
+			posX = ax;
+			posY = ay;
+			break;
+		}
+    }
+}
 
 void Avatar::imprimirSolucion() {
 	for (int i = 0; i < ruta.size(); i++) {
 		cout << "[x:" << ruta[i][0] << " y:" << ruta[i][1] <<"]"<< endl;
 	}
+}
+
+bool Avatar::esPosibleContinuar(){
+	return posiblesCaminosX.empty();
 }

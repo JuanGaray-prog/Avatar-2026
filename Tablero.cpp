@@ -12,6 +12,7 @@ Tablero::Tablero()
 {
   laberinto.resize(0); //Se inicializa el laberinto en vacio
   nivel = "";
+  posX,posY;
 }
 
 
@@ -38,10 +39,21 @@ void Tablero::mostrarTablero()
 {
   for(int x=0; x<10; x++){
     for(int y=0; y<10; y++){
-      cout << laberinto[x][y] << " ";
+      if ((x == posX) && (y == posY)){
+      cout << "A" << " ";
+      } else if (laberinto[x][y] == 1) {
+        cout << "." << " ";
+      } else if (laberinto[x][y] == 0) {
+        cout << "#" << " ";
+      }
     }
     cout << endl;
   }
+}
+void Tablero::position(int x, int y)
+{
+  posX = x;
+  posY = y;
 }
 
 int Tablero::getCelda(int x, int y)
